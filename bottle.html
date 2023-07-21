@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <title>Object Detection Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+
+    <style>
+        body {
+            background-size: cover;
+            text-align: center;
+        }
+
+        #heading {
+            width: 100%;
+            margin-top: 0px;
+            font-size: 40px;
+        }
+
+        .back {
+            background-color: black;
+            margin-left: 999px;
+            margin-right: -310px;
+            color: white;
+            font-size: 15px;
+        }
+
+        canvas {
+            box-shadow: 10px 10px 10px grey;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="btn btn-primary" id="heading">Object Detection Project</h1>
+    <br>
+    <a href="index.html" class="btn back">Back</a>
+    <br>
+    <h4 id="status" class="btn btn-danger">Status: </h4>
+    <br><br>
+    <h4 class="btn btn-success" id="objects_detected"></h4>
+
+    <script>
+        img = "";
+        status = "";
+
+        function preload() {
+            img = loadImage("bottle.jpg");
+        }
+
+        function setup() {
+            canvas = createCanvas(640, 420);
+            canvas.position(350, 200);
+            objectDetector = ml5.objectDetector('cocossd', modelLoaded);
+            document.getElementById("status").innerHTML = "Status: Detecting Objects";
+        }
+
+        function modelLoaded() {
+            console.log("Model Loaded");
+            status = true;
+            objectDetector.detect(img, gotResult);
+        }
+
+        function gotResult(error, results) {
+            if (error) {
+                console.log(error);
+            }
+            console.log(results);
+        }
+
+        function draw() {
+            image(img, 0, 0, 640, 420);
+            fill("#FF0000");
+            text("Water Bottle", 250, 375);
+            noFill();
+            stroke("#FF0000");
+            rect(225, 10, 120, 370);
+        }
+    </script>
+</body>
+
+</html>
